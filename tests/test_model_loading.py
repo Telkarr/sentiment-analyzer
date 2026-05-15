@@ -13,6 +13,6 @@ MODEL_PATH = Path(__file__).resolve().parent.parent / "models" / "best_model.job
 def test_model_loads():
     model = joblib.load(MODEL_PATH)
     assert hasattr(model, "predict")
-    result = model.predict(["Отличный сервис, всё понравилось!"])
+    result = model.predict(["Excellent service, I liked everything!"])
     assert len(result) == 1
     assert int(result[0]) in {0, 1, 2}
