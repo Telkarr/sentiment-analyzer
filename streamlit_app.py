@@ -5,24 +5,21 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+import nltk
 import joblib
 import numpy as np
 import streamlit as st
+
+nltk.download("stopwords", quiet=True)
 
 PROJECT_ROOT = Path(__file__).resolve().parent
 MODELS_DIR = PROJECT_ROOT / "models"
 
 LABEL_NAMES = ["neutral", "positive", "negative"]
 
-LABEL_DISPLAY = {
-    "neutral": "Нейтральный",
-    "positive": "Позитивный",
-    "negative": "Негативный",
-}
-
 EXAMPLES = {
     "Позитив": "Отличный сервис, всё понравилось! Рекомендую",
-    "Нейтраль": "Товар доставлен в срок, всё как заказывал",
+    "Нейтраль": "Всё неплохо, но ожидал большего",
     "Негатив": "Ужасное качество, полное разочарование",
 }
 
@@ -77,13 +74,27 @@ input_text = st.text_area(
     placeholder="Напишите текст или выберите пример в сайдбаре...",
 )
 
-if st.button("Классифицировать", type="primary", disabled=not input_text.strip()):
+if st.button("Классифицировать", type="primary"):
+    if not input_text.strip():
+        st.warning("Введите текст для анализа")
+        st.stop()
     result = classify(input_text.strip())
     label_name = result["label_name"]
     proba = result["probabilities"]
 
-    st.subheader("Результат")
-    st.metric("Класс", LABEL_DISPLAY.get(label_name, label_name))
+    LABEL_STYLE = {
+        "positive": ("Позитивный", "rgba(34, 197, 94, 0.15)", "#16a34a"),
+        "neutral":  ("Нейтральный", "rgba(156, 163, 175, 0.15)", "#6b7280"),
+        "negative": ("Негативный",  "rgba(239, 68, 68, 0.15)",  "#dc2626"),
+    }
+    display, bg, border = LABEL_STYLE[label_name]
+    st.markdown(
+        f"""<div style="background:{bg};border:1.5px solid {border};
+        border-radius:10px;padding:16px 24px;display:inline-block;
+        font-size:1.3rem;font-weight:600;color:white">{display}</div>""",
+        unsafe_allow_html=True,
+    )
+    st.write("")
 
     st.subheader("Вероятности")
     for cls_key, cls_display in [
