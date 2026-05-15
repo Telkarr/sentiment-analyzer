@@ -1,13 +1,3 @@
-"""Text preprocessor for short Russian messages.
-
-Cleaning and normalisation pipeline: URL / hashtag / mention removal,
-lowercasing, repeated-character collapsing, rule-based tokenisation via ``re``,
-lemmatisation via ``pymorphy2``, stopword removal (nltk) with negation
-preservation. Emoji are kept as individual tokens.
-
-``TextPreprocessor`` is compatible with the sklearn ``Pipeline`` API.
-"""
-
 from __future__ import annotations
 
 import re
@@ -39,13 +29,6 @@ NEGATIONS = frozenset({"не", "нет", "ни", "без", "нельзя"})
 
 
 class TextPreprocessor(BaseEstimator, TransformerMixin):
-    """Clean → tokenise → lemmatise → filter stopwords.
-
-    Each step is controlled by a boolean flag; all steps are enabled by default.
-    Returns a space-joined token string per input text, ready for
-    ``CountVectorizer`` / ``TfidfVectorizer``.
-    """
-
     def __init__(
         self,
         remove_urls: bool = True,
