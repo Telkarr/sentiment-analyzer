@@ -91,7 +91,7 @@ if st.button("Классифицировать", type="primary"):
     st.markdown(
         f"""<div style="background:{bg};border:1.5px solid {border};
         border-radius:10px;padding:16px 24px;display:inline-block;
-        font-size:1.3rem;font-weight:600;color:black">{display}</div>""",
+        font-size:1.3rem;font-weight:600;color:var(--text-color)">{display}</div>""",
         unsafe_allow_html=True,
     )
     st.write("")
