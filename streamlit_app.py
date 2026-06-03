@@ -71,7 +71,7 @@ input_text = st.text_area(
     value=st.session_state.get("input_text", ""),
     height=120,
     max_chars=5000,
-    placeholder="Напишите текст или выберите пример в сайдбаре...",
+    placeholder="Напишите текст или выберите пример в текстовом поле...",
 )
 
 if st.button("Классифицировать", type="primary"):
@@ -91,7 +91,7 @@ if st.button("Классифицировать", type="primary"):
     st.markdown(
         f"""<div style="background:{bg};border:1.5px solid {border};
         border-radius:10px;padding:16px 24px;display:inline-block;
-        font-size:1.3rem;font-weight:600;color:white">{display}</div>""",
+        font-size:1.3rem;font-weight:600;color:black">{display}</div>""",
         unsafe_allow_html=True,
     )
     st.write("")
